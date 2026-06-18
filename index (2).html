@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Profiled Visuals — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ivory:#F8F6F2;--beige:#EDE7DE;--brown:#3A312A;--wblack:#171717;--gold:#C9A96E;--goldl:#E8D5B0}
+body{background:var(--wblack);color:var(--ivory);font-family:'Inter',sans-serif;overflow-x:hidden}
+.page{display:none}.page.active{display:block}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;background:var(--ivory);flex-wrap:wrap;gap:8px}
+.logo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;letter-spacing:4px;color:var(--wblack);text-transform:uppercase;cursor:pointer;flex-shrink:0}
+.nav-links{display:flex;gap:8px;list-style:none;flex-wrap:wrap;align-items:center}
+.nav-links a{text-decoration:none;color:var(--brown);font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:color .3s;padding:4px 0;border-bottom:1px solid transparent}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold)}
+.nav-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:6px 12px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s;flex-shrink:0}
+.nav-btn:hover{background:var(--gold);color:var(--wblack)}
+
+/* HAMBURGER */
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:4px;background:transparent;border:none}
+.hamburger span{display:block;width:20px;height:2px;background:var(--brown);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+.mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(248,246,242,.98);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:20px}
+.mobile-nav.open{display:flex}
+.mobile-nav a{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;letter-spacing:3px;color:var(--brown);text-transform:uppercase;cursor:pointer;text-decoration:none;transition:color .3s}
+.mobile-nav a:hover{color:var(--gold)}
+.mobile-nav .close-btn{position:absolute;top:18px;right:20px;background:transparent;border:none;font-size:26px;cursor:pointer;color:var(--brown)}
+
+@media(max-width:680px){
+  .nav-links,.nav-btn{display:none}
+  .hamburger{display:flex}
+}
+
+/* BUTTONS */
+.btn-p{background:var(--gold);color:var(--wblack);padding:10px 22px;font-size:10px;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-weight:500;transition:all .3s}
+.btn-p:hover{background:var(--goldl)}
+.btn-o{background:transparent;color:var(--ivory);padding:10px 22px;font-size:10px;letter-spacing:3px;text-transform:uppercase;border:1px solid rgba(248,246,242,.35);cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s}
+.btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.btn-g{background:transparent;color:var(--gold);padding:10px 22px;font-size:10px;letter-spacing:3px;text-transform:uppercase;border:1px solid var(--gold);cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s}
+.btn-g:hover{background:var(--gold);color:var(--wblack)}
+.btn-wa{background:#25D366;color:#fff;padding:10px 22px;font-size:10px;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s}
+.btn-wa:hover{background:#1ebe5d}
+
+.s-eye{font-size:9px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,44px);font-weight:300;color:var(--ivory);line-height:1.15;margin-bottom:10px}
+.s-title em{font-style:italic}
+.s-rule{width:32px;height:1px;background:var(--gold);margin-bottom:32px}
+
+/* PORTFOLIO */
+#page-portfolio .hero{min-height:50vh;display:flex;align-items:center;justify-content:center;background:#0e0b09;text-align:center;padding:50px 24px}
+#page-portfolio .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,6vw,64px);font-weight:300;color:var(--ivory);line-height:1.1;margin-bottom:16px}
+#page-portfolio .hero h1 em{font-style:italic;color:var(--goldl)}
+#page-portfolio .hero p{font-size:13px;color:rgba(248,246,242,.5);max-width:380px;margin:0 auto 28px;line-height:1.9}
+.filter-bar{background:var(--wblack);padding:20px 24px 0;position:sticky;top:52px;z-index:100}
+.filter-inner{border-bottom:1px solid rgba(201,169,110,.2);padding-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ftab{background:transparent;border:none;color:rgba(248,246,242,.4);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:6px 12px;cursor:pointer;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .3s}
+.ftab:hover{color:var(--gold)}.ftab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.gcnt{font-size:10px;color:rgba(248,246,242,.3)}
+.gallery{padding:28px 24px 48px;background:var(--wblack)}
+.masonry{columns:3;gap:10px}
+@media(max-width:700px){.masonry{columns:2}}
+@media(max-width:400px){.masonry{columns:1}}
+.mitem{break-inside:avoid;margin-bottom:10px;position:relative;overflow:hidden;cursor:pointer;transition:transform .3s}
+.mitem:hover{transform:scale(1.01)}
+.pblock{width:100%;position:relative;overflow:hidden;background:#1a1410}
+.pblock img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.mitem:hover .pblock img{transform:scale(1.05)}
+.pblock::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(23,23,23,.9) 100%);z-index:1;opacity:0;transition:opacity .4s}
+.mitem:hover .pblock::before{opacity:1}
+.povl{position:absolute;bottom:0;left:0;right:0;padding:14px 12px;z-index:2;transform:translateY(8px);opacity:0;transition:all .4s}
+.mitem:hover .povl{transform:translateY(0);opacity:1}
+.ptag{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.pname{font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:300;color:var(--ivory)}
+.p1{aspect-ratio:3/4}.p2{aspect-ratio:4/3}.p3{aspect-ratio:2/3}.p4{aspect-ratio:1/1}.p5{aspect-ratio:4/5}.p6{aspect-ratio:3/2}.p7{aspect-ratio:9/16}
+
+/* PRICELIST */
+#page-pricelist{background:var(--wblack)}
+.price-filter{display:flex;gap:0;justify-content:center;margin:0 24px;border-bottom:1px solid rgba(201,169,110,.2);flex-wrap:wrap}
+.pftab{background:transparent;border:none;color:rgba(248,246,242,.4);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:10px 16px;cursor:pointer;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s}
+.pftab:hover{color:var(--gold)}.pftab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.price-section{display:none;padding:32px 24px}.price-section.active{display:block}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:8px}
+.pcard{background:#1a1410;border:1px solid rgba(201,169,110,.15);padding:24px 20px;transition:all .3s;position:relative}
+.pcard:hover{border-color:rgba(201,169,110,.45);transform:translateY(-4px)}
+.pcard.featured{border-color:var(--gold)}
+.pc-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--wblack);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;font-family:'Inter',sans-serif;white-space:nowrap}
+.pc-name{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(248,246,242,.4);margin-bottom:10px}
+.pc-price{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--ivory);margin-bottom:4px}
+.pc-price span{font-size:12px;color:rgba(248,246,242,.4);font-family:'Inter',sans-serif}
+.pc-rule{width:24px;height:1px;background:var(--gold);margin:14px 0}
+.pc-list{list-style:none;margin-bottom:20px}
+.pc-list li{font-size:11px;color:rgba(248,246,242,.65);padding:4px 0;border-bottom:1px solid rgba(201,169,110,.07);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.pc-list li::before{content:'—';color:var(--gold);font-size:9px;flex-shrink:0;margin-top:2px}
+.pc-btns{display:flex;flex-direction:column;gap:7px}
+.pc-btns button{width:100%;font-size:9px;padding:9px 16px}
+.price-cat-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--ivory);margin-bottom:6px}
+.price-cat-title em{font-style:italic;color:var(--goldl)}
+.price-cat-sub{font-size:12px;color:rgba(248,246,242,.4);margin-bottom:24px}
+
+/* FAQ + T&C */
+#page-faq{background:var(--wblack);padding:0}
+.faq-tabs{display:flex;border-bottom:1px solid rgba(201,169,110,.2);padding:0 24px;margin-bottom:0;flex-wrap:wrap}
+.faq-tab-btn{background:transparent;border:none;color:rgba(248,246,242,.4);font-size:9px;letter-spacing:3px;text-transform:uppercase;padding:14px 16px;cursor:pointer;font-family:'Inter',sans-serif;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .3s}
+.faq-tab-btn:hover{color:var(--gold)}.faq-tab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.faq-content{display:none;padding:32px 24px}.faq-content.active{display:block}
+.faq-list{max-width:700px}
+.faq-item{border-bottom:1px solid rgba(201,169,110,.15)}
+.faq-q{width:100%;background:transparent;border:none;color:var(--ivory);font-family:'Inter',sans-serif;font-size:13px;font-weight:400;text-align:left;padding:18px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color .3s}
+.faq-q:hover{color:var(--gold)}.faq-q.open{color:var(--gold)}
+.faq-icon{font-size:18px;color:var(--gold);flex-shrink:0;transition:transform .3s;line-height:1}
+.faq-q.open .faq-icon{transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-a.open{max-height:250px}
+.faq-a p{font-size:12px;color:rgba(248,246,242,.55);line-height:1.8;padding:0 0 18px}
+
+/* T&C */
+.tnc-section{margin-bottom:28px;border-left:2px solid var(--gold);padding-left:16px}
+.tnc-num{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.tnc-heading{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ivory);margin-bottom:10px}
+.tnc-body{font-size:12px;color:rgba(248,246,242,.6);line-height:1.85}
+.tnc-body ul{list-style:none;margin-top:6px}
+.tnc-body ul li{padding:3px 0;display:flex;gap:8px;align-items:flex-start}
+.tnc-body ul li::before{content:'—';color:var(--gold);font-size:10px;flex-shrink:0;margin-top:2px}
+.tnc-highlight{background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.2);padding:12px 16px;margin-top:10px;font-size:12px;color:var(--gold);line-height:1.7}
+
+/* BOOKING */
+#page-booking{background:var(--wblack);padding:0}
+.booking-hero{background:#0e0b09;padding:48px 24px;text-align:center}
+.booking-body{padding:32px 24px}
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+@media(max-width:600px){.booking-grid{grid-template-columns:1fr}}
+.payment-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+@media(max-width:400px){.payment-cards{grid-template-columns:1fr}}
+.pay-card{background:#1a1410;border:1px solid rgba(201,169,110,.15);padding:14px;cursor:pointer;transition:border-color .3s}
+.pay-card:hover{border-color:rgba(201,169,110,.4)}
+.pay-bank{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pay-num{font-size:12px;color:var(--ivory);letter-spacing:.5px;margin-bottom:3px;font-family:'Cormorant Garamond',serif}
+.pay-name{font-size:10px;color:rgba(248,246,242,.4)}
+.pay-copy{font-size:9px;color:rgba(201,169,110,.5);margin-top:5px;text-align:right}
+.ewallet-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+@media(max-width:400px){.ewallet-cards{grid-template-columns:1fr 1fr}}
+.ew-card{background:#1a1410;border:1px solid rgba(201,169,110,.12);padding:12px;text-align:center;cursor:pointer;transition:border-color .3s}
+.ew-card:hover{border-color:rgba(201,169,110,.4)}
+.ew-name{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.ew-num{font-size:11px;color:rgba(248,246,242,.6)}
+.pay-label{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(201,169,110,.6);margin-bottom:8px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(248,246,242,.5);margin-bottom:7px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#1a1410;border:1px solid rgba(201,169,110,.2);color:var(--ivory);padding:10px 12px;font-family:'Inter',sans-serif;font-size:12px;outline:none;transition:border-color .3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group select option{background:#1a1410;color:var(--ivory)}
+.form-group textarea{resize:vertical;min-height:80px}
+.success-box{display:none;background:#1a1410;border:1px solid rgba(201,169,110,.3);padding:24px;text-align:center;margin-top:16px}
+.success-box.show{display:block}
+.success-icon{font-size:28px;margin-bottom:10px}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--ivory);margin-bottom:8px}
+.success-sub{font-size:12px;color:rgba(248,246,242,.5);line-height:1.7}
+
+/* CONTACT */
+#page-contact{background:var(--wblack);padding:0}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px}
+@media(max-width:600px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{background:#1a1410;border:1px solid rgba(201,169,110,.15);padding:20px;display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;cursor:pointer;transition:border-color .3s;text-decoration:none}
+.contact-card:hover{border-color:rgba(201,169,110,.4)}
+.cc-icon{width:36px;height:36px;border:1px solid rgba(201,169,110,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cc-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round}
+.cc-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:rgba(248,246,242,.4);margin-bottom:3px}
+.cc-val{font-size:13px;color:var(--ivory);font-family:'Cormorant Garamond',serif;font-weight:300}
+.cc-sub{font-size:10px;color:rgba(248,246,242,.35);margin-top:2px}
+
+/* TESTIMONIALS */
+.testi{padding:48px 24px;background:var(--brown)}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:28px}
+.titem{text-align:center}
+.stars{color:var(--gold);font-size:11px;letter-spacing:2px;margin-bottom:7px}
+.tquote{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;font-weight:300;line-height:1.7;color:var(--ivory);margin-bottom:14px}
+.trule{width:20px;height:1px;background:var(--gold);margin:0 auto 10px}
+.tname{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:3px}
+.tdate{font-size:10px;color:rgba(248,246,242,.3)}
+
+/* CTA */
+.cta-sec{padding:60px 24px;background:var(--wblack);text-align:center}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:#0a0806;padding:36px 24px;border-top:1px solid rgba(201,169,110,.1)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:24px}
+.flogo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;letter-spacing:4px;color:var(--ivory);text-transform:uppercase;margin-bottom:6px}
+.ftagline{font-size:10px;color:rgba(248,246,242,.3);letter-spacing:1px;margin-bottom:12px}
+.fcol h4{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.fcol a,.fcol p{font-size:11px;color:rgba(248,246,242,.38);line-height:2.2;text-decoration:none;display:block;cursor:pointer;transition:color .3s}
+.fcol a:hover{color:var(--gold)}
+.fsocial{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.fsocial a{display:flex;align-items:center;gap:6px;font-size:10px;color:rgba(248,246,242,.4);text-decoration:none;padding:5px 0;transition:color .3s}
+.fsocial a:hover{color:var(--gold)}
+.fsocial svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;flex-shrink:0}
+.fbot{margin-top:24px;padding-top:16px;border-top:1px solid rgba(201,169,110,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.fcopy{font-size:9px;color:rgba(248,246,242,.18);letter-spacing:1px}
+
+/* MODAL */
+.modal-bd{display:none;position:fixed;inset:0;background:rgba(10,8,6,.92);z-index:999;align-items:center;justify-content:center;padding:16px}
+.modal-bd.open{display:flex}
+.modal-box{background:#1a1410;border:1px solid rgba(201,169,110,.2);max-width:420px;width:100%;padding:32px;position:relative}
+.modal-close{position:absolute;top:12px;right:14px;background:transparent;border:none;color:rgba(248,246,242,.5);font-size:22px;cursor:pointer;transition:color .3s;line-height:1}
+.modal-close:hover{color:var(--gold)}
+.m-eye{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.m-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--ivory);margin-bottom:7px}
+.m-rule{width:24px;height:1px;background:var(--gold);margin-bottom:18px}
+.m-sub{font-size:12px;color:rgba(248,246,242,.5);line-height:1.8;margin-bottom:20px}
+.m-btns{display:flex;gap:8px;flex-wrap:wrap}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1410;border:1px solid rgba(201,169,110,.3);color:var(--ivory);font-family:'Inter',sans-serif;font-size:12px;letter-spacing:1px;padding:10px 20px;opacity:0;transition:all .4s;z-index:1000;pointer-events:none;white-space:nowrap;max-width:90vw;text-overflow:ellipsis;overflow:hidden}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* JADWAL */
+#page-jadwal{background:var(--wblack);padding:0}
+.jadwal-hero{background:#0e0b09;padding:48px 24px;text-align:center}
+.jadwal-body{padding:32px 24px}
+.jadwal-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+@media(max-width:600px){.jadwal-grid{grid-template-columns:1fr}}
+.calendar-box{background:#1a1410;border:1px solid rgba(201,169,110,.15);padding:20px}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.cal-month{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--ivory)}
+.cal-nav{background:transparent;border:1px solid rgba(201,169,110,.3);color:var(--gold);width:26px;height:26px;cursor:pointer;font-size:14px;transition:all .3s}
+.cal-nav:hover{background:var(--gold);color:var(--wblack)}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;text-align:center}
+.cal-day-label{font-size:8px;letter-spacing:2px;color:rgba(248,246,242,.3);text-transform:uppercase;padding:3px 0;margin-bottom:3px}
+.cal-day{padding:5px 3px;font-size:11px;cursor:pointer;transition:all .3s;border-radius:2px}
+.cal-day:hover{background:rgba(201,169,110,.15);color:var(--gold)}
+.cal-day.empty{cursor:default}
+.cal-day.available{color:rgba(248,246,242,.75)}
+.cal-day.pending{color:#E8C840;background:rgba(232,200,64,.1)}
+.cal-day.booked{color:#E24B4A;background:rgba(226,75,74,.1);cursor:not-allowed;text-decoration:line-through}
+.cal-day.selected{background:var(--gold);color:var(--wblack);font-weight:500}
+.cal-legend{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(248,246,242,.45)}
+.legend-dot{width:7px;height:7px;border-radius:50%}
+.result-box{margin-top:18px;padding:14px;border:1px solid rgba(201,169,110,.2);display:none}
+.result-box.show{display:block}
+.result-box.avail{border-color:rgba(100,200,100,.4);background:rgba(100,200,100,.05)}
+.result-box.taken{border-color:rgba(226,75,74,.4);background:rgba(226,75,74,.05)}
+.result-msg{font-size:12px;line-height:1.7}
+</style>
+</head>
+<body>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" onclick="closeMobileNav()">×</button>
+  <a onclick="goPage('portfolio');closeMobileNav()">Portfolio</a>
+  <a onclick="goPage('pricelist');closeMobileNav()">Pricelist</a>
+  <a onclick="goPage('jadwal');closeMobileNav()">Cek Jadwal</a>
+  <a onclick="goPage('faq');closeMobileNav()">FAQ & T&C</a>
+  <a onclick="goPage('contact');closeMobileNav()">Contact</a>
+  <a onclick="goPage('booking');closeMobileNav()" style="color:var(--gold)">Booking</a>
+</div>
+
+<nav>
+  <div class="logo" onclick="goPage('portfolio')">Profiled Visuals</div>
+  <ul class="nav-links">
+    <li><a id="nav-portfolio" onclick="goPage('portfolio')" class="active">Portfolio</a></li>
+    <li><a id="nav-pricelist" onclick="goPage('pricelist')">Pricelist</a></li>
+    <li><a id="nav-jadwal" onclick="goPage('jadwal')">Cek Jadwal</a></li>
+    <li><a id="nav-faq" onclick="goPage('faq')">FAQ & T&C</a></li>
+    <li><a id="nav-contact" onclick="goPage('contact')">Contact</a></li>
+  </ul>
+  <button class="nav-btn" onclick="goPage('booking')">Booking</button>
+  <button class="hamburger" id="hamburger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ======== PORTFOLIO ======== -->
+<div id="page-portfolio" class="page active">
+  <div class="hero">
+    <div>
+      <div class="s-eye">Portfolio — Profiled Visuals</div>
+      <h1>Cerita yang Hidup<br><em>Dalam Setiap Bingkai</em></h1>
+      <p>Setiap gambar adalah jiwa dari momen yang tak terulang — diabadikan dengan kedalaman rasa dan mata yang penuh makna.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-p" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">Lihat Galeri</button>
+        <button class="btn-o" onclick="goPage('pricelist')">Cek Pricelist</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <div style="display:flex;flex-wrap:wrap">
+        <button class="ftab active" onclick="filterG('all',this)">Semua</button>
+        <button class="ftab" onclick="filterG('wedding',this)">Wedding</button>
+        <button class="ftab" onclick="filterG('engagement',this)">Engagement</button>
+        <button class="ftab" onclick="filterG('wisuda',this)">Wisuda</button>
+        <button class="ftab" onclick="filterG('tingkeban',this)">Tingkeban</button>
+      </div>
+      <span class="gcnt" id="gcnt">18 karya</span>
+    </div>
+  </div>
+
+  <section class="gallery" id="gallery">
+    <div class="masonry" id="mgrid">
+      <div class="mitem" data-cat="wedding" data-name="Bridal Outdoor" data-sub="Outdoor Garden — Wedding" onclick="openPhotoModal(this)"><div class="pblock p1"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_1863.jpg" alt="Bridal Outdoor" loading="lazy"></div><div class="povl"><div class="ptag">Wedding</div><div class="pname">Bridal Portrait</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Risa & Hariri" data-sub="The Engagement" onclick="openPhotoModal(this)"><div class="pblock p2"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/KOL%201.jpeg" alt="Risa Hariri Engagement" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Risa × Hariri</div></div></div>
+      <div class="mitem" data-cat="tingkeban" data-name="Prosesi Siraman" data-sub="Detail Kembang — Tingkeban" onclick="openPhotoModal(this)"><div class="pblock p3"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Salinan%20DSC09577.jpg" alt="Kembang Siraman" loading="lazy"></div><div class="povl"><div class="ptag">Tingkeban</div><div class="pname">Kembang Siraman</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Ami & Andi" data-sub="The Engagement" onclick="openPhotoModal(this)"><div class="pblock p2"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Picsart_26-05-04_02-41-55-738.jpeg" alt="Ami Andi Engagement" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Ami × Andi</div></div></div>
+      <div class="mitem" data-cat="wedding" data-name="Detail Cincin" data-sub="Ring & Jewelry Detail" onclick="openPhotoModal(this)"><div class="pblock p1"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Salinan%20DSC00105.jpg" alt="Ring Detail" loading="lazy"></div><div class="povl"><div class="ptag">Wedding</div><div class="pname">Ring Detail</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Ami & Andi" data-sub="Outdoor Engagement" onclick="openPhotoModal(this)"><div class="pblock p5"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_2702.jpg" alt="Engagement bouquet" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Ami × Andi</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Lisa & Jodi" data-sub="The Engagement" onclick="openPhotoModal(this)"><div class="pblock p2"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/KOL%203%20(1).jpeg" alt="Lisa Jodi" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Lisa × Jodi</div></div></div>
+      <div class="mitem" data-cat="wisuda" data-name="Wisuda UTM" data-sub="Universitas Trunojoyo Madura" onclick="openPhotoModal(this)"><div class="pblock p1"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/wisuda%20outdor%202.jpg" alt="Wisuda Outdoor" loading="lazy"></div><div class="povl"><div class="ptag">Wisuda</div><div class="pname">Outdoor — UTM</div></div></div>
+      <div class="mitem" data-cat="tingkeban" data-name="Prosesi Mitoni" data-sub="Ritual Telur — Siraman Adat" onclick="openPhotoModal(this)"><div class="pblock p3"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Salinan%20DSC09669.jpg" alt="Prosesi Mitoni" loading="lazy"></div><div class="povl"><div class="ptag">Tingkeban</div><div class="pname">Prosesi Mitoni</div></div></div>
+      <div class="mitem" data-cat="wedding" data-name="Bridal Session" data-sub="Garden Outdoor Wedding" onclick="openPhotoModal(this)"><div class="pblock p1"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_1865.jpg" alt="Bridal Garden" loading="lazy"></div><div class="povl"><div class="ptag">Wedding</div><div class="pname">Bridal Garden</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Momen Bahagia" data-sub="Candid Engagement" onclick="openPhotoModal(this)"><div class="pblock p4"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_2707.jpg" alt="Candid Engagement" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Momen Bahagia</div></div></div>
+      <div class="mitem" data-cat="wisuda" data-name="Bachelor of Law" data-sub="IAI Syaichona M. Cholil — Bangkalan" onclick="openPhotoModal(this)"><div class="pblock p6"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Salinan%20DSC08388.jpg" alt="Wisuda Law" loading="lazy"></div><div class="povl"><div class="ptag">Wisuda</div><div class="pname">Bachelor of Law</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Risa & Hariri" data-sub="The Engagement Collage" onclick="openPhotoModal(this)"><div class="pblock p2"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/2.jpeg" alt="Risa Hariri" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Risa × Hariri</div></div></div>
+      <div class="mitem" data-cat="wedding" data-name="Hijab Bridal" data-sub="Modern Muslim Wedding" onclick="openPhotoModal(this)"><div class="pblock p3"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_2709.jpg" alt="Hijab Wedding" loading="lazy"></div><div class="povl"><div class="ptag">Wedding</div><div class="pname">Muslim Bridal</div></div></div>
+      <div class="mitem" data-cat="wisuda" data-name="Detail Toga" data-sub="Universitas Trunojoyo Madura" onclick="openPhotoModal(this)"><div class="pblock p5"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_1876.jpg" alt="Detail Toga" loading="lazy"></div><div class="povl"><div class="ptag">Wisuda</div><div class="pname">Detail Toga</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Wisnu & Cantika" data-sub="Pre-Wedding Urban" onclick="openPhotoModal(this)"><div class="pblock p7"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/Picsart_26-05-04_02-14-17-586.jpeg" alt="Wisnu Cantika" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Wisnu × Cantika</div></div></div>
+      <div class="mitem" data-cat="engagement" data-name="Momen Spesial" data-sub="Engagement Session" onclick="openPhotoModal(this)"><div class="pblock p4"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/IMG_2705.jpg" alt="Engagement Special" loading="lazy"></div><div class="povl"><div class="ptag">Engagement</div><div class="pname">Momen Spesial</div></div></div>
+      <div class="mitem" data-cat="wedding" data-name="Bridal Close Up" data-sub="Wedding Portrait" onclick="openPhotoModal(this)"><div class="pblock p1"><img src="https://raw.githubusercontent.com/dedeyusufsag234-droid/dede/main/DSC01199.jpeg" alt="Bridal Close Up" loading="lazy"></div><div class="povl"><div class="ptag">Wedding</div><div class="pname">Bridal Close Up</div></div></div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="https://www.instagram.com/profiled_visuals?igsh=bTcyZmRoMWMwaGs5&utm_source=qr" target="_blank" rel="noopener noreferrer" class="btn-g" style="display:inline-block;text-decoration:none">Lihat Semua di Instagram ↗</a>
+    </div>
+  </section>
+
+  <section class="testi">
+    <div class="s-eye">Kata Mereka</div>
+    <div class="s-rule"></div>
+    <div class="tgrid">
+      <div class="titem"><div class="stars">★★★★★</div><div class="tquote">"Hasilnya jauh melebihi ekspektasi. Setiap momen terasa hidup kembali."</div><div class="trule"></div><div class="tname">Bella & Arya</div><div class="tdate">Wedding — Maret 2025</div></div>
+      <div class="titem"><div class="stars">★★★★★</div><div class="tquote">"Foto wisuda saya terasa seperti editorial majalah. Sangat puas!"</div><div class="trule"></div><div class="tname">Dinda Ayu</div><div class="tdate">Wisuda — Januari 2025</div></div>
+      <div class="titem"><div class="stars">★★★★★</div><div class="tquote">"Proses smooth, cepat, kualitas premium. Sangat worth it!"</div><div class="trule"></div><div class="tname">Keluarga Santoso</div><div class="tdate">Tingkeban — Februari 2025</div></div>
+    </div>
+  </section>
+
+  <section class="cta-sec">
+    <div class="s-eye">Abadikan Momen Anda</div>
+    <div class="s-title" style="margin-bottom:12px">Siap Membuat <em>Cerita Anda?</em></div>
+    <p style="font-size:13px;color:rgba(248,246,242,.45);margin-bottom:28px">Tanggal spesial Anda hanya satu. Biarkan kami mengabadikannya.</p>
+    <div class="cta-btns">
+      <button class="btn-p" onclick="goPage('booking')">Booking Sekarang</button>
+      <button class="btn-g" onclick="goPage('jadwal')">Cek Ketersediaan</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="fgrid">
+      <div>
+        <div class="flogo">Profiled Visuals</div>
+        <div class="ftagline">Photography & Videography</div>
+        <p style="font-size:10px;color:rgba(248,246,242,.25);line-height:1.9">Surabaya, East Java<br>0858-9588-9997</p>
+        <!-- SOSMED LINKS -->
+        <div class="fsocial">
+          <a href="https://www.instagram.com/profiled_visuals?igsh=bTcyZmRoMWMwaGs5&utm_source=qr" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            Instagram
+          </a>
+          <a href="https://www.tiktok.com/@yusuf_sa_?_r=1&_t=ZS-97HUa1J0l16" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            TikTok
+          </a>
+        </div>
+      </div>
+      <div class="fcol"><h4>Layanan</h4><a onclick="goPage('pricelist')">Wedding</a><a onclick="goPage('pricelist')">Engagement</a><a onclick="goPage('pricelist')">Wisuda</a><a onclick="goPage('pricelist')">Tingkeban</a></div>
+      <div class="fcol"><h4>Informasi</h4><a onclick="goPage('faq')">FAQ</a><a onclick="goPage('faq')">Syarat & Ketentuan</a><a onclick="goPage('jadwal')">Cek Jadwal</a><a onclick="goPage('booking')">Booking</a></div>
+    </div>
+    <div class="fbot"><div class="fcopy">© 2025 Profiled Visuals. All rights reserved.</div></div>
+  </footer>
+</div>
+
+<!-- ======== PRICELIST ======== -->
+<div id="page-pricelist" class="page">
+  <div style="background:#0e0b09;padding:48px 24px;text-align:center">
+    <div class="s-eye">Harga Transparan</div>
+    <div class="s-title">Pilih Paket <em>Terbaik untuk Anda</em></div>
+    <p style="font-size:13px;color:rgba(248,246,242,.45);max-width:400px;margin:0 auto;line-height:1.9">Semua paket sudah termasuk professional editing dengan standar cinematic premium.</p>
+  </div>
+  <div class="price-filter">
+    <button class="pftab active" onclick="switchPrice('wedding',this)">Wedding</button>
+    <button class="pftab" onclick="switchPrice('engagement',this)">Engagement</button>
+    <button class="pftab" onclick="switchPrice('tingkeban',this)">Tingkeban</button>
+    <button class="pftab" onclick="switchPrice('wisuda',this)">Wisuda</button>
+    <button class="pftab" onclick="switchPrice('prewedding',this)">Prewedding</button>
+    <button class="pftab" onclick="switchPrice('video-engagement',this)">Video Engagement</button>
+    <button class="pftab" onclick="switchPrice('video-wedding',this)">Video Wedding</button>
+  </div>
+  <div id="pr-wedding" class="price-section active">
+    <div class="price-cat-title">Wedding <em>Photography</em></div>
+    <div class="price-cat-sub">Dokumentasi akad & resepsi dengan hasil elegan dan berkelas.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Silver</div><div class="pc-price">Rp 1.300.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Dokumentasi akad & resepsi</li><li>Durasi hingga 5 jam</li><li>1 Photographer</li><li>Unlimited shoot</li><li>Editing warna & pencahayaan</li><li>Softcopy Google Drive</li><li>80 foto cetak</li><li>Album Magnetic Premium</li><li>Cetak foto 40×60 cm</li><li>1 Cetak foto 10R + Frame</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wedding Silver','Rp 1.300.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wedding Silver','Rp 1.300.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Terpopuler</div><div class="pc-name">Platinum</div><div class="pc-price">Rp 1.600.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Dokumentasi akad & resepsi</li><li>Durasi hingga 6 jam</li><li>1 Photographer</li><li>Unlimited shoot</li><li>Professional editing + retouch</li><li>Softcopy Google Drive</li><li>120 foto cetak</li><li>Album Magnetic Premium</li><li>Cetak foto 40×60 cm</li><li>High Resolution Print Files</li><li>1 Cetak foto 12R + Frame</li><li>Bonus 1 Cetak foto 10R (no frame)</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wedding Platinum','Rp 1.600.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wedding Platinum','Rp 1.600.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+  <div id="pr-engagement" class="price-section">
+    <div class="price-cat-title">Engagement <em>Photography</em></div>
+    <div class="price-cat-sub">Mengabadikan momen lamaran yang penuh makna.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Black</div><div class="pc-price">Rp 450.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>Soft file only</li><li>40 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Engagement Black','Rp 450.000')">Booking</button><button class="btn-wa" onclick="waPackage('Engagement Black','Rp 450.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Rekomendasi</div><div class="pc-name">White</div><div class="pc-price">Rp 600.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>40 foto edit</li><li>40 foto cetak 4R</li><li>Small Album</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Engagement White','Rp 600.000')">Booking</button><button class="btn-wa" onclick="waPackage('Engagement White','Rp 600.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Silver</div><div class="pc-price">Rp 750.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>60 foto edit</li><li>60 foto cetak 4R</li><li>2 foto cetak 10R</li><li>Large Album</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Engagement Silver','Rp 750.000')">Booking</button><button class="btn-wa" onclick="waPackage('Engagement Silver','Rp 750.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+  <div id="pr-tingkeban" class="price-section">
+    <div class="price-cat-title">Tingkeban <em>Photography</em></div>
+    <div class="price-cat-sub">Dokumentasi acara tingkeban yang sakral dan berkesan.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Black</div><div class="pc-price">Rp 400.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>Soft file only</li><li>40 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Tingkeban Black','Rp 400.000')">Booking</button><button class="btn-wa" onclick="waPackage('Tingkeban Black','Rp 400.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Rekomendasi</div><div class="pc-name">White</div><div class="pc-price">Rp 500.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>40 foto edit</li><li>40 foto cetak 4R</li><li>Small Album</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Tingkeban White','Rp 500.000')">Booking</button><button class="btn-wa" onclick="waPackage('Tingkeban White','Rp 500.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Silver</div><div class="pc-price">Rp 750.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Unlimited file mentah</li><li>60 foto edit</li><li>60 foto cetak 4R</li><li>2 foto cetak 10R</li><li>Large Album</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Tingkeban Silver','Rp 750.000')">Booking</button><button class="btn-wa" onclick="waPackage('Tingkeban Silver','Rp 750.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+  <div id="pr-wisuda" class="price-section">
+    <div class="price-cat-title">Wisuda <em>Outdoor</em></div>
+    <div class="price-cat-sub">Sesi wisuda outdoor dengan konsep modern dan cinematic.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Starter</div><div class="pc-price">Rp 200.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi 35 menit</li><li>1 lokasi outdoor</li><li>30 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wisuda Starter','Rp 200.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wisuda Starter','Rp 200.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Basic</div><div class="pc-price">Rp 300.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi 45 menit</li><li>1 lokasi outdoor</li><li>45 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wisuda Basic','Rp 300.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wisuda Basic','Rp 300.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Terpopuler</div><div class="pc-name">Premium</div><div class="pc-price">Rp 400.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi 60 menit</li><li>1–2 lokasi outdoor</li><li>60 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wisuda Premium','Rp 400.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wisuda Premium','Rp 400.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Elite</div><div class="pc-price">Rp 500.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi 80 menit</li><li>1–2 lokasi outdoor</li><li>75 foto edit</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Wisuda Elite','Rp 500.000')">Booking</button><button class="btn-wa" onclick="waPackage('Wisuda Elite','Rp 500.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+
+  <!-- PREWEDDING -->
+  <div id="pr-prewedding" class="price-section">
+    <div class="price-cat-title">Prewedding <em>Outdoor & Cinematic</em></div>
+    <div class="price-cat-sub">Sesi foto & video prewedding outdoor dengan nuansa cinematic yang elegan.</div>
+
+    <p style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px">— Foto Outdoor</p>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Black</div><div class="pc-price">Rp 450.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Photographer</li><li>Durasi 1 jam</li><li>1 Lokasi</li><li>30 Foto Edit Premium</li><li>All File Foto</li><li>File via Google Drive</li><li>Maks. 2 Orang</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Black','Rp 450.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Black','Rp 450.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Rekomendasi</div><div class="pc-name">Silver</div><div class="pc-price">Rp 550.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Photographer</li><li>Durasi 1–2 jam</li><li>1 Lokasi</li><li>50 Foto Edit Premium</li><li>All File Foto</li><li>File via Google Drive</li><li>Maks. 2 Orang</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Silver','Rp 550.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Silver','Rp 550.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Gold</div><div class="pc-price">Rp 700.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Photographer</li><li>Durasi 2 jam</li><li>1–2 Spot Area Berdekatan</li><li>60 Foto Edit Premium</li><li>All File Foto</li><li>File via Google Drive</li><li>Free 5 Cetak Foto 4R</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Gold','Rp 700.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Gold','Rp 700.000')">WhatsApp</button></div></div>
+    </div>
+
+    <p style="font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin:28px 0 16px">— Cinematic Video</p>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Black Cinematic</div><div class="pc-price">Rp 500.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Videographer</li><li>Durasi 1 jam</li><li>1 Lokasi</li><li>Video Cinematic 1–2 menit</li><li>Musik Cinematic</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Black Cinematic','Rp 500.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Black Cinematic','Rp 500.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Rekomendasi</div><div class="pc-name">Silver Cinematic</div><div class="pc-price">Rp 650.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Videographer</li><li>Durasi 1–2 jam</li><li>1 Lokasi</li><li>Video Cinematic 2–3 menit</li><li>Color Grading Cinematic</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Silver Cinematic','Rp 650.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Silver Cinematic','Rp 650.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Gold Cinematic</div><div class="pc-price">Rp 750.000<span>/sesi</span></div><div class="pc-rule"></div><ul class="pc-list"><li>1 Videographer</li><li>Durasi 2 jam</li><li>1–2 Spot Area Berdekatan</li><li>Video Cinematic 3–4 menit</li><li>Color Grading Premium</li><li>Vertical Reels 30 detik</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Prewedding Gold Cinematic','Rp 750.000')">Booking</button><button class="btn-wa" onclick="waPackage('Prewedding Gold Cinematic','Rp 750.000')">WhatsApp</button></div></div>
+    </div>
+
+    <div style="background:rgba(201,169,110,.07);border:1px solid rgba(201,169,110,.2);padding:16px 20px;margin-top:24px;font-size:11px;color:rgba(248,246,242,.55);line-height:1.85">
+      <strong style="color:var(--gold);font-size:9px;letter-spacing:2px;text-transform:uppercase">Catatan</strong><br>
+      Harga belum termasuk tiket masuk lokasi · Transportasi dikenakan biaya tambahan untuk lokasi di luar area layanan · MUA, wardrobe & properti disiapkan oleh klien · Maks. revisi video 1 kali · Estimasi pengerjaan foto 3–7 hari kerja · Estimasi pengerjaan video 7–14 hari kerja · File dikirim via Google Drive.
+    </div>
+  </div>
+
+  <!-- VIDEO CINEMATIC ENGAGEMENT -->
+  <div id="pr-video-engagement" class="price-section">
+    <div class="price-cat-title">Video Cinematic <em>Engagement</em></div>
+    <div class="price-cat-sub">Abadikan momen lamaran dalam balutan sinematik yang memukau.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Star</div><div class="pc-price">Rp 500.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 1–2 menit</li><li>1 Videografer</li><li>Coverage 2–3 jam</li><li>Cinematic highlight engagement</li><li>Teaser 30 detik</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Engagement Star','Rp 500.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Engagement Star','Rp 500.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Rekomendasi</div><div class="pc-name">Silver</div><div class="pc-price">Rp 750.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 2–3 menit</li><li>1 Videografer</li><li>Half day coverage</li><li>Highlight + detail moment</li><li>Teaser engagement 30–45 detik</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Engagement Silver','Rp 750.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Engagement Silver','Rp 750.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Gold</div><div class="pc-price">Rp 1.000.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 3–4 menit</li><li>1 Videografer + 1 Assistant</li><li>Full day coverage</li><li>Cinematic highlight + storytelling editing</li><li>Teaser engagement 45 detik</li><li>Flashdisk & Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Engagement Gold','Rp 1.000.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Engagement Gold','Rp 1.000.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+
+  <!-- VIDEO CINEMATIC WEDDING -->
+  <div id="pr-video-wedding" class="price-section">
+    <div class="price-cat-title">Video Cinematic <em>Wedding</em></div>
+    <div class="price-cat-sub">Rangkaian hari istimewa Anda dalam satu karya sinematik yang abadi.</div>
+    <div class="price-grid">
+      <div class="pcard"><div class="pc-name">Silver</div><div class="pc-price">Rp 1.000.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 3–4 menit</li><li>1 Videografer</li><li>Full day coverage</li><li>Highlight cinematic video</li><li>Teaser wedding 45 detik</li><li>File via Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Wedding Silver','Rp 1.000.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Wedding Silver','Rp 1.000.000')">WhatsApp</button></div></div>
+      <div class="pcard featured"><div class="pc-badge">Terpopuler</div><div class="pc-name">Gold</div><div class="pc-price">Rp 1.250.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 4–5 menit</li><li>1 Videografer + 1 Assistant</li><li>Full day coverage</li><li>Cinematic highlight + detail moment</li><li>Teaser wedding 45 detik</li><li>Flashdisk & Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Wedding Gold','Rp 1.250.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Wedding Gold','Rp 1.250.000')">WhatsApp</button></div></div>
+      <div class="pcard"><div class="pc-name">Platinum</div><div class="pc-price">Rp 1.500.000<span>/paket</span></div><div class="pc-rule"></div><ul class="pc-list"><li>Durasi video 5–6 menit</li><li>2 Videografer</li><li>Full day coverage</li><li>Cinematic highlight + storytelling editing</li><li>Teaser wedding 45 detik</li><li>Flashdisk & Google Drive</li></ul><div class="pc-btns"><button class="btn-p" onclick="openBookingModal('Video Wedding Platinum','Rp 1.500.000')">Booking</button><button class="btn-wa" onclick="waPackage('Video Wedding Platinum','Rp 1.500.000')">WhatsApp</button></div></div>
+    </div>
+  </div>
+
+  <footer style="background:#0a0806;padding:32px 24px;border-top:1px solid rgba(201,169,110,.1)"><div class="fbot" style="margin-top:0;padding-top:0;border-top:none"><div class="fcopy">© 2025 Profiled Visuals. All rights reserved.</div><div style="font-size:10px;color:rgba(248,246,242,.25)">0858-9588-9997 · Surabaya</div></div></footer>
+</div>
+
+<!-- ======== CEK JADWAL ======== -->
+<div id="page-jadwal" class="page">
+  <div class="jadwal-hero">
+    <div class="s-eye">Ketersediaan Tanggal</div>
+    <div class="s-title">Cek <em>Jadwal Kami</em></div>
+    <p style="font-size:13px;color:rgba(248,246,242,.45);max-width:360px;margin:0 auto;line-height:1.9">Pastikan tanggal spesial Anda masih tersedia sebelum booking.</p>
+  </div>
+  <div class="jadwal-body">
+    <div class="jadwal-grid">
+      <div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="j-nama" placeholder="Nama lengkap Anda"></div>
+        <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="j-wa" placeholder="08xx-xxxx-xxxx"></div>
+        <div class="form-group"><label>Jenis Acara</label><select id="j-acara"><option value="">Pilih jenis acara</option><option>Wedding</option><option>Engagement</option><option>Wisuda</option><option>Tingkeban</option><option>Event</option></select></div>
+        <div class="form-group"><label>Lokasi Acara</label><input type="text" id="j-lokasi" placeholder="Kota / Venue"></div>
+        <div class="form-group"><label>Catatan</label><textarea id="j-catatan" placeholder="Informasi tambahan..."></textarea></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-p" onclick="cekJadwal()">Cek Jadwal</button>
+          <button class="btn-wa" onclick="openWA()">Hubungi Admin</button>
+        </div>
+        <div class="result-box" id="result-box"><p class="result-msg" id="result-msg"></p></div>
+      </div>
+      <div>
+        <div class="calendar-box">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="changeMonth(-1)">‹</button>
+            <div class="cal-month" id="cal-month">Juni 2026</div>
+            <button class="cal-nav" onclick="changeMonth(1)">›</button>
+          </div>
+          <div class="cal-days" id="cal-days"></div>
+          <div class="cal-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:rgba(248,246,242,.5)"></div>Tersedia</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#E8C840"></div>Pending</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div>Terisi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== FAQ & T&C ======== -->
+<div id="page-faq" class="page">
+  <div style="background:#0e0b09;padding:48px 24px;text-align:center">
+    <div class="s-eye">Informasi & Ketentuan</div>
+    <div class="s-title">FAQ & <em>Syarat Ketentuan</em></div>
+    <p style="font-size:13px;color:rgba(248,246,242,.45);max-width:400px;margin:0 auto;line-height:1.9">Semua yang perlu Anda ketahui sebelum bekerjasama dengan kami.</p>
+  </div>
+  <div class="faq-tabs">
+    <button class="faq-tab-btn active" onclick="switchFaqTab('faq',this)">FAQ Umum</button>
+    <button class="faq-tab-btn" onclick="switchFaqTab('tnc',this)">Syarat & Ketentuan</button>
+  </div>
+  <div id="fc-faq" class="faq-content active">
+    <div class="faq-list" id="faq-list"></div>
+    <div style="margin-top:36px;text-align:center">
+      <p style="font-size:13px;color:rgba(248,246,242,.45);margin-bottom:18px">Masih ada pertanyaan lain? Hubungi kami langsung.</p>
+      <button class="btn-wa" onclick="openWA()">Chat WhatsApp Sekarang</button>
+    </div>
+  </div>
+  <div id="fc-tnc" class="faq-content">
+    <div style="max-width:700px">
+      <div class="tnc-section"><div class="tnc-num">01</div><div class="tnc-heading">Pemesanan & Pembayaran</div><div class="tnc-body"><ul><li>Booking sah setelah pembayaran DP minimal <strong style="color:var(--gold)">30%</strong> dari total harga paket.</li><li>Pelunasan wajib dilakukan paling lambat <strong style="color:var(--gold)">H-1 sebelum acara</strong>.</li><li>Vendor berhak menunda atau membatalkan layanan apabila pelunasan belum dilakukan.</li><li>Pembayaran yang telah dilakukan tidak dapat dikembalikan kecuali terjadi pembatalan dari pihak vendor.</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">02</div><div class="tnc-heading">Durasi & Proses Pengerjaan</div><div class="tnc-body"><ul><li>Wisuda Outdoor: <strong style="color:var(--gold)">3–10 hari kerja</strong></li><li>Engagement & Tingkeban: <strong style="color:var(--gold)">10–20 hari kerja</strong></li><li>Wedding: <strong style="color:var(--gold)">14–30 hari kerja</strong></li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">03</div><div class="tnc-heading">Revisi Hasil</div><div class="tnc-body"><ul><li>Setiap paket mendapatkan <strong style="color:var(--gold)">1 kali revisi minor</strong>.</li><li>Revisi mencakup penyesuaian warna, exposure, cropping, atau pemilihan foto.</li><li>Revisi tambahan dikenakan biaya sesuai tingkat kesulitan.</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">04</div><div class="tnc-heading">Pengiriman File</div><div class="tnc-body"><ul><li>Seluruh file digital dikirim via Google Drive atau media digital lain yang disepakati.</li><li>Klien wajib segera mengunduh dan melakukan backup file setelah diterima.</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">05</div><div class="tnc-heading">Garansi Penyimpanan File</div><div class="tnc-body"><ul><li>Vendor menyimpan file selama <strong style="color:var(--gold)">2 bulan</strong> sejak tanggal pengiriman.</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">06</div><div class="tnc-heading">Keamanan Data</div><div class="tnc-body">Vendor melakukan penyimpanan dengan sistem backup. Namun apabila terjadi kehilangan data akibat faktor di luar kendali, vendor tidak dapat menjamin pengembalian seluruh file secara utuh.<div class="tnc-highlight">Kompensasi maksimal:<br>• <strong>2× nilai paket</strong> untuk layanan Engagement, Tingkeban, dan Wedding<br>• <strong>Pengembalian dana + Rp 500.000</strong> untuk layanan Wisuda Outdoor</div></div></div>
+      <div class="tnc-section"><div class="tnc-num">07</div><div class="tnc-heading">Ketentuan Pengambilan Dokumentasi</div><div class="tnc-body"><ul><li>Pengambilan foto/video menyesuaikan kondisi acara, lokasi, cuaca, dan pencahayaan.</li><li>Klien diharapkan memberikan rundown acara agar dokumentasi maksimal.</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">08</div><div class="tnc-heading">Biaya Tambahan</div><div class="tnc-body">Biaya tambahan dapat dikenakan untuk:<ul><li>Penambahan durasi dokumentasi</li><li>Penambahan lokasi pemotretan</li><li>Lokasi acara yang berjarak lebih dari <strong style="color:var(--gold)">45 menit</strong> dari lokasi vendor</li></ul></div></div>
+      <div class="tnc-section"><div class="tnc-num">09</div><div class="tnc-heading">Force Majeure</div><div class="tnc-body">Vendor tidak bertanggung jawab atas keterlambatan akibat keadaan di luar kendali.</div></div>
+      <div class="tnc-section"><div class="tnc-num">10</div><div class="tnc-heading">Penggunaan Dokumentasi</div><div class="tnc-body">Vendor berhak menggunakan hasil dokumentasi untuk keperluan portofolio dan promosi. Apabila klien tidak berkenan, wajib menyampaikan permintaan tertulis sebelum acara berlangsung.</div></div>
+      <div class="tnc-section"><div class="tnc-num">11</div><div class="tnc-heading">Persetujuan Klien</div><div class="tnc-body"><div class="tnc-highlight">Dengan melakukan pembayaran DP atau pembayaran penuh, klien dianggap telah <strong>membaca, memahami, dan menyetujui</strong> seluruh syarat dan ketentuan yang berlaku di PROFILED VISUALS.</div></div></div>
+      <div style="margin-top:32px;text-align:center"><button class="btn-wa" onclick="openWA()">Hubungi Admin Kami</button></div>
+    </div>
+  </div>
+  <footer style="background:#0a0806;padding:32px 24px;border-top:1px solid rgba(201,169,110,.1);margin-top:48px"><div class="fbot" style="margin-top:0;padding-top:0;border-top:none"><div class="fcopy">© 2025 Profiled Visuals. All rights reserved.</div></div></footer>
+</div>
+
+<!-- ======== BOOKING ======== -->
+<div id="page-booking" class="page">
+  <div class="booking-hero">
+    <div class="s-eye">Proses Booking</div>
+    <div class="s-title">Booking <em>& Pembayaran</em></div>
+    <p style="font-size:13px;color:rgba(248,246,242,.45);max-width:380px;margin:0 auto;line-height:1.9">DP 30% untuk konfirmasi booking. Pelunasan dilakukan sebelum hari acara.</p>
+  </div>
+  <div class="booking-body">
+    <div class="booking-grid">
+      <div>
+        <div class="pay-label">Transfer Bank</div>
+        <div class="payment-cards">
+          <div class="pay-card" onclick="copyNum('1852234088','BCA')"><div class="pay-bank">BCA</div><div class="pay-num">1852234088</div><div class="pay-name">A/N Dede Yusup</div><div class="pay-copy">Klik untuk salin</div></div>
+          <div class="pay-card" onclick="copyNum('1400025449282','Mandiri')"><div class="pay-bank">Mandiri</div><div class="pay-num">1400025449282</div><div class="pay-name">A/N Dede Yusup</div><div class="pay-copy">Klik untuk salin</div></div>
+          <div class="pay-card" onclick="copyNum('610301037470533','BRI')"><div class="pay-bank">BRI</div><div class="pay-num">610301037470533</div><div class="pay-name">A/N Dede Yusup</div><div class="pay-copy">Klik untuk salin</div></div>
+          <div class="pay-card" onclick="copyNum('1967527394','BNI')"><div class="pay-bank">BNI</div><div class="pay-num">1967527394</div><div class="pay-name">A/N Dede Yusup</div><div class="pay-copy">Klik untuk salin</div></div>
+        </div>
+        <div class="pay-label">E-Wallet</div>
+        <div class="ewallet-cards">
+          <div class="ew-card" onclick="copyNum('085895889997','DANA')"><div class="ew-name">DANA</div><div class="ew-num">0858-9588-9997</div></div>
+          <div class="ew-card" onclick="copyNum('085895889997','GoPay')"><div class="ew-name">GoPay</div><div class="ew-num">0858-9588-9997</div></div>
+          <div class="ew-card" onclick="copyNum('085895889997','ShopeePay')"><div class="ew-name">ShopeePay</div><div class="ew-num">0858-9588-9997</div></div>
+        </div>
+      </div>
+      <div>
+        <div id="booking-form-wrap">
+          <div class="form-group"><label>Nama Lengkap</label><input type="text" id="b-nama" placeholder="Nama lengkap Anda"></div>
+          <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="b-wa" placeholder="08xx-xxxx-xxxx"></div>
+          <div class="form-group"><label>Jenis Acara</label><select id="b-acara"><option value="">Pilih jenis acara</option><option>Wedding</option><option>Engagement</option><option>Wisuda</option><option>Tingkeban</option><option>Event</option></select></div>
+          <div class="form-group"><label>Tanggal Acara</label><input type="date" id="b-tanggal"></div>
+          <div class="form-group"><label>Pilihan Paket</label><select id="b-paket"><option value="">Pilih paket</option><option>Wedding Silver</option><option>Wedding Platinum</option><option>Engagement Black</option><option>Engagement White</option><option>Engagement Silver</option><option>Tingkeban Black</option><option>Tingkeban White</option><option>Tingkeban Silver</option><option>Wisuda Starter</option><option>Wisuda Basic</option><option>Wisuda Premium</option><option>Wisuda Elite</option></select></div>
+          <div class="form-group"><label>Catatan Tambahan</label><textarea id="b-catatan" placeholder="Konsep, permintaan khusus, dll."></textarea></div>
+          <div style="margin-bottom:12px;font-size:10px;color:rgba(248,246,242,.35);line-height:1.7">Dengan melakukan booking, Anda menyetujui <span style="color:var(--gold);cursor:pointer" onclick="goPage('faq')">Syarat & Ketentuan</span> yang berlaku.</div>
+          <button class="btn-p" style="width:100%" onclick="submitBooking()">Konfirmasi Booking</button>
+        </div>
+        <div class="success-box" id="success-box">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Terima Kasih!</div>
+          <p class="success-sub">Booking Anda telah diterima dan akan segera kami verifikasi.<br><br>Tim kami akan menghubungi Anda melalui WhatsApp dalam 1×24 jam.</p>
+          <div style="margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+            <button class="btn-wa" onclick="openWA()">Chat WhatsApp</button>
+            <button class="btn-g" onclick="goPage('portfolio')">Lihat Portfolio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CONTACT ======== -->
+<div id="page-contact" class="page">
+  <div style="background:#0e0b09;padding:48px 24px;text-align:center">
+    <div class="s-eye">Hubungi Kami</div>
+    <div class="s-title">Senang <em>Mendengar</em><br>dari Anda</div>
+  </div>
+  <div style="padding:32px 24px">
+    <div class="contact-grid">
+      <div>
+        <div class="contact-card" onclick="openWA()">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/></svg></div>
+          <div><div class="cc-label">WhatsApp</div><div class="cc-val">0858-9588-9997</div><div class="cc-sub">Klik untuk chat langsung</div></div>
+        </div>
+        <!-- INSTAGRAM — link asli -->
+        <a class="contact-card" href="https://www.instagram.com/profiled_visuals?igsh=bTcyZmRoMWMwaGs5&utm_source=qr" target="_blank" rel="noopener noreferrer">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="#C9A96E"/></svg></div>
+          <div><div class="cc-label">Instagram</div><div class="cc-val">@profiled_visuals</div><div class="cc-sub">Lihat karya terbaru kami</div></div>
+        </a>
+        <!-- TIKTOK — link asli -->
+        <a class="contact-card" href="https://www.tiktok.com/@yusuf_sa_?_r=1&_t=ZS-97HUa1J0l16" target="_blank" rel="noopener noreferrer">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></div>
+          <div><div class="cc-label">TikTok</div><div class="cc-val">@yusuf_sa_</div><div class="cc-sub">Tonton video cinematic kami</div></div>
+        </a>
+        <div class="contact-card">
+          <div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+          <div><div class="cc-label">Lokasi</div><div class="cc-val">Surabaya, East Java</div><div class="cc-sub">Area coverage Surabaya & sekitarnya</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="c-nama" placeholder="Nama Anda"></div>
+        <div class="form-group"><label>Pesan</label><textarea id="c-pesan" placeholder="Tulis pesan Anda di sini..." style="min-height:100px"></textarea></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-p" onclick="sendContact()">Kirim Pesan</button>
+          <button class="btn-wa" onclick="openWA()">WhatsApp Langsung</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bd" id="modal" onclick="closeMBD(event)">
+  <div class="modal-box"><button class="modal-close" onclick="closeModal()">×</button><div id="modal-cnt"></div></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PAGES=['portfolio','pricelist','jadwal','faq','booking','contact'];
+const MONTHS=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+// KALENDER KOSONG — tidak ada booking/pending
+const BOOKED=[];
+const PENDING=[];
+
+// Set kalender ke bulan sekarang (Juni 2026)
+let calYear=2026, calMonth=5, selDate=null;
+
+function goPage(id){
+  PAGES.forEach(p=>{
+    document.getElementById('page-'+p).classList.toggle('active',p===id);
+    const nl=document.getElementById('nav-'+p);
+    if(nl)nl.classList.toggle('active',p===id);
+  });
+  window.scrollTo(0,0);
+  if(id==='jadwal')renderCal();
+  if(id==='faq')renderFAQ();
+}
+
+function openMobileNav(){
+  document.getElementById('mobileNav').classList.add('open');
+  document.getElementById('hamburger').classList.add('open');
+}
+function closeMobileNav(){
+  document.getElementById('mobileNav').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+
+function filterG(cat,btn){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  let c=0;
+  document.querySelectorAll('.mitem').forEach(i=>{
+    const show=cat==='all'||i.dataset.cat===cat;
+    i.style.display=show?'block':'none';
+    if(show)c++;
+  });
+  document.getElementById('gcnt').textContent=c+' karya';
+}
+
+function switchPrice(cat,btn){
+  document.querySelectorAll('.pftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.price-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('pr-'+cat).classList.add('active');
+}
+
+function switchFaqTab(tab,btn){
+  document.querySelectorAll('.faq-tab-btn').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.faq-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('fc-'+tab).classList.add('active');
+}
+
+function renderCal(){
+  document.getElementById('cal-month').textContent=MONTHS[calMonth]+' '+calYear;
+  let h='';
+  ['Min','Sen','Sel','Rab','Kam','Jum','Sab'].forEach(d=>h+=`<div class="cal-day-label">${d}</div>`);
+  const fd=new Date(calYear,calMonth,1).getDay();
+  for(let i=0;i<fd;i++)h+=`<div class="cal-day empty"></div>`;
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  for(let i=1;i<=days;i++){
+    let cls='cal-day available';
+    if(BOOKED.includes(i))cls='cal-day booked';
+    else if(PENDING.includes(i))cls='cal-day pending';
+    else if(selDate===i)cls='cal-day selected';
+    h+=`<div class="${cls}" onclick="selectDay(${i})">${i}</div>`;
+  }
+  document.getElementById('cal-days').innerHTML=h;
+}
+
+function changeMonth(d){calMonth+=d;if(calMonth>11){calMonth=0;calYear++;}if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+function selectDay(d){if(BOOKED.includes(d))return;selDate=d;renderCal();}
+
+function cekJadwal(){
+  const nama=document.getElementById('j-nama').value;
+  const acara=document.getElementById('j-acara').value;
+  if(!nama||!acara||!selDate){showToast('Isi nama, jenis acara, dan pilih tanggal');return;}
+  const rb=document.getElementById('result-box');
+  const rm=document.getElementById('result-msg');
+  if(BOOKED.includes(selDate)){
+    rb.className='result-box show taken';
+    rm.innerHTML=`<strong style="color:#E24B4A">Maaf, tanggal ${selDate} ${MONTHS[calMonth]} ${calYear} sudah terisi.</strong><br>Pilih tanggal alternatif atau hubungi admin.`;
+  } else if(PENDING.includes(selDate)){
+    rb.className='result-box show taken';
+    rm.innerHTML=`<strong style="color:#E8C840">Tanggal ${selDate} ${MONTHS[calMonth]} ${calYear} sedang pending konfirmasi.</strong><br>Hubungi admin untuk info lebih lanjut.`;
+  } else {
+    rb.className='result-box show avail';
+    rm.innerHTML=`<strong style="color:#4CAF50">Tanggal ${selDate} ${MONTHS[calMonth]} ${calYear} tersedia!</strong><br>Silakan lanjutkan booking.`;
+    setTimeout(()=>{rb.innerHTML+='<div style="margin-top:12px"><button class="btn-p" onclick="goPage(\'booking\')">Lanjut Booking</button></div>'},400);
+  }
+}
+
+function renderFAQ(){
+  const el=document.getElementById('faq-list');
+  if(el.children.length>0)return;
+  const faqs=[
+    {q:'Bagaimana cara booking?',a:'Pilih paket, cek ketersediaan jadwal, isi form booking, dan lakukan pembayaran DP 30%. Setelah konfirmasi, booking Anda resmi terdaftar.'},
+    {q:'Berapa DP yang harus dibayarkan?',a:'DP sebesar 30% dari total harga paket untuk mengamankan tanggal acara Anda.'},
+    {q:'Kapan pelunasan dilakukan?',a:'Pelunasan dilakukan maksimal H-1 sebelum hari acara, atau bisa lebih awal sesuai kesepakatan.'},
+    {q:'Berapa lama proses editing?',a:'Wisuda Outdoor 3–10 hari kerja, Engagement & Tingkeban 10–20 hari, Wedding 14–30 hari. File dikirim via Google Drive.'},
+    {q:'Apakah tersedia album cetak?',a:'Ya, beberapa paket sudah termasuk album magnetic premium dan cetak foto. Lihat detail di halaman Pricelist.'},
+    {q:'Apakah bisa request konsep atau tema?',a:'Tentu! Kami terbuka dengan konsep khusus. Diskusikan ide Anda saat konsultasi awal.'},
+    {q:'Apakah bisa tambah jam dokumentasi?',a:'Bisa dengan biaya tambahan sesuai kesepakatan. Hubungi admin untuk informasi lebih lanjut.'},
+    {q:'Berapa lama file disimpan setelah dikirim?',a:'File disimpan selama 2 bulan sejak tanggal pengiriman. Setelah itu klien bertanggung jawab atas backup file sendiri.'},
+  ];
+  faqs.forEach((f,i)=>{
+    el.innerHTML+=`<div class="faq-item"><button class="faq-q" onclick="toggleFAQ(${i},this)">${f.q}<span class="faq-icon">+</span></button><div class="faq-a" id="fa-${i}"><p>${f.a}</p></div></div>`;
+  });
+}
+
+function toggleFAQ(i,btn){
+  const el=document.getElementById('fa-'+i);
+  const isOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(e=>e.classList.remove('open'));
+  document.querySelectorAll('.faq-q').forEach(b=>b.classList.remove('open'));
+  if(!isOpen){el.classList.add('open');btn.classList.add('open');}
+}
+
+function submitBooking(){
+  const nama=document.getElementById('b-nama').value;
+  const wa=document.getElementById('b-wa').value;
+  const acara=document.getElementById('b-acara').value;
+  const tgl=document.getElementById('b-tanggal').value;
+  const paket=document.getElementById('b-paket').value;
+  if(!nama||!wa||!acara||!tgl||!paket){showToast('Mohon lengkapi semua kolom wajib');return;}
+  document.getElementById('booking-form-wrap').style.display='none';
+  document.getElementById('success-box').classList.add('show');
+}
+
+function sendContact(){
+  const nama=document.getElementById('c-nama').value;
+  const pesan=document.getElementById('c-pesan').value;
+  if(!nama||!pesan){showToast('Isi nama dan pesan terlebih dahulu');return;}
+  showToast('Pesan berhasil dikirim!');
+  document.getElementById('c-nama').value='';
+  document.getElementById('c-pesan').value='';
+}
+
+function openPhotoModal(el){
+  const name=el.dataset.name,sub=el.dataset.sub,cat=el.dataset.cat;
+  document.getElementById('modal-cnt').innerHTML=`<div class="m-eye">${cat.charAt(0).toUpperCase()+cat.slice(1)}</div><div class="m-title">${name}</div><div class="m-rule"></div><div class="m-sub">${sub}<br><br>Tertarik dengan hasil serupa? Hubungi kami untuk konsultasi gratis.</div><div class="m-btns"><button class="btn-p" onclick="openWA();closeModal()">Chat WhatsApp</button><button class="btn-g" onclick="goPage('booking');closeModal()">Booking Sekarang</button></div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function openBookingModal(pkg,price){
+  document.getElementById('modal-cnt').innerHTML=`<div class="m-eye">Konfirmasi Paket</div><div class="m-title">${pkg}</div><div class="m-rule"></div><div class="m-sub">Harga: <strong style="color:var(--gold)">${price}</strong><br><br>Lanjutkan ke form booking untuk detail acara dan konfirmasi pembayaran DP.</div><div class="m-btns"><button class="btn-p" onclick="goPage('booking');document.getElementById('b-paket').value='${pkg}';closeModal()">Isi Form Booking</button><button class="btn-wa" onclick="waPackage('${pkg}','${price}');closeModal()">Chat WhatsApp</button></div>`;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function closeMBD(e){if(e.target===document.getElementById('modal'))closeModal()}
+function copyNum(num,bank){navigator.clipboard.writeText(num).catch(()=>{});showToast('Nomor '+bank+' ('+num+') berhasil disalin!');}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
+function waPackage(pkg,price){const msg=encodeURIComponent('Halo Profiled Visuals, saya tertarik paket '+pkg+' ('+price+'). Bisa info lebih lanjut?');showToast('Membuka WhatsApp...');setTimeout(()=>window.open('https://wa.me/6285895889997?text='+msg,'_blank'),600);}
+function openWA(){showToast('Membuka WhatsApp...');setTimeout(()=>window.open('https://wa.me/6285895889997','_blank'),600)}
+</script>
+</body>
+</html>
